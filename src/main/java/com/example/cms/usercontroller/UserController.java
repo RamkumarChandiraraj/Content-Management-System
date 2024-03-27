@@ -35,6 +35,13 @@ public class UserController {
 	{
 		return "Hello from cms";
 	}
+	@GetMapping("/users/{userId}")
+	public ResponseEntity<ResponseStructure<UserResponse>> findUniqueUser(@PathVariable int userId)
+	{
+		return userService.findUniqueUser(userId);
+	}
+	
+	
 	
 	
 }
