@@ -29,19 +29,22 @@ public class UserController {
 	{
 		return userService.userRegistration(userRequest);
 	}
-	
+
 	@GetMapping("/test")
 	public String test()
 	{
 		return "Hello from cms";
 	}
+
 	@GetMapping("/users/{userId}")
 	public ResponseEntity<ResponseStructure<UserResponse>> findUniqueUser(@PathVariable int userId)
 	{
 		return userService.findUniqueUser(userId);
 	}
-	
-	
-	
-	
+
+	@DeleteMapping("/users/{userId}")
+	public ResponseEntity<ResponseStructure<UserResponse>> softDeleteUser(@PathVariable int userId)
+	{
+		return userService.softDeleteUser(userId);
+	}
 }
