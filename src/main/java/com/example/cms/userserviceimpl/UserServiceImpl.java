@@ -53,5 +53,15 @@ public class UserServiceImpl implements UserService{
 
 		return user;
 	}
+	@Override
+	public ResponseEntity<ResponseStructure<UserResponse>> findUniqueUser(int userId) {
+		return userRepository.findById(userId).map(user->
+		ResponseEntity.ok(structure.setStatusCode(HttpStatus.OK.value())
+				.setMessage("User found by the given Id")
+				.setData(mapToUserResponse(user))))
+				.orElseThrow(()->new UserNotFoundByIdException("Invalid userId"));
+	}
+
+	
 	
 }
