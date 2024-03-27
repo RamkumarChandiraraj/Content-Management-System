@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService{
 				.email(user.getEmail())
 				.createdAt(user.getCreatedAt())
 				.lastModifiedAt(user.getLastModifiedAt())
-				
+				.deleted(user.isDeleted())
 				.build();
 	}
 
@@ -53,6 +53,7 @@ public class UserServiceImpl implements UserService{
 
 		return user;
 	}
+
 	@Override
 	public ResponseEntity<ResponseStructure<UserResponse>> findUniqueUser(int userId) {
 		return userRepository.findById(userId).map(user->
@@ -62,6 +63,15 @@ public class UserServiceImpl implements UserService{
 				.orElseThrow(()->new UserNotFoundByIdException("Invalid userId"));
 	}
 
-	
-	
+	@Override
+	public ResponseEntity<ResponseStructure<UserResponse>> softDeleteUser(int userId) {
+		return userRepository.findById(userId).map(user->{user.setDeleted(true);
+		userRepository.save(user);
+		return ResponseEntity.ok(structure.setStatusCode(HttpStatus.OK.value())
+				.setMessage("User deleted")
+				.setData(mapToUserResponse(user)));
+		}).orElseThrow(()->new UserNotFoundByIdException("User not found by Id"));
+	}
+
+
 }

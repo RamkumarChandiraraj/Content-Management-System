@@ -20,6 +20,6 @@ public class UserResponse {
 	
 	private LocalDateTime createdAt;
 	private LocalDateTime lastModifiedAt;
-	
+	private boolean deleted;
 	
 }
