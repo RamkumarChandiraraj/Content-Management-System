@@ -76,7 +76,7 @@ public class BlogServiceImpl implements BlogService{
 	}
 
 	@Override
-	public ResponseEntity<ResponseStructure<BlogResponse>> blogService(BlogRequest blogRequest, int blogId) {
+	public ResponseEntity<ResponseStructure<BlogResponse>> updateBlogData(BlogRequest blogRequest, int blogId) {
 		return blogRepository.findById(blogId).map(blog->{
 			if(blogRepository.existsByTitle(blogRequest.getTitle()))
 				throw new BlogTitleAlreadyExistException("Failed to update blog");

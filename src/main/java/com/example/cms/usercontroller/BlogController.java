@@ -42,8 +42,8 @@ public class BlogController {
 	}
 	
 	@PutMapping("/blogs/{blogId}")
-	public ResponseEntity<ResponseStructure<BlogResponse>> blogService(@RequestBody BlogRequest blogRequest, int blogId)
+	public ResponseEntity<ResponseStructure<BlogResponse>> updateBlogData(@RequestBody BlogRequest blogRequest, int blogId)
 	{
-		return blogService.blogService(blogRequest,blogId);
+		return blogService.updateBlogData(blogRequest,blogId);
 	}
 }
