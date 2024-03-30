@@ -1,7 +1,8 @@
 package com.example.cms.responsedto;
 
 import java.time.LocalDateTime;
-
+import java.util.List;
+import com.example.cms.usermodel.Blog;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,4 +23,5 @@ public class UserResponse {
 	private LocalDateTime lastModifiedAt;
 	private boolean deleted;
 	
+	private List<Blog> blogs;
 }

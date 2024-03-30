@@ -4,7 +4,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import com.example.cms.requestdto.UserRequest;
 import com.example.cms.responsedto.UserResponse;
 import com.example.cms.userexception.UserAlreadyExistByEmailException;
@@ -22,18 +21,7 @@ public class UserServiceImpl implements UserService{
 	private UserRepository userRepository;
 	private ResponseStructure<UserResponse> structure;
 	private PasswordEncoder passwordEncoder;
-
-	@Override
-	public ResponseEntity<ResponseStructure<UserResponse>> userRegistration(UserRequest userRequest) {
-		if(userRepository.existsByEmail(userRequest.getEmail()))
-			throw new UserAlreadyExistByEmailException("Faild to register User");
-
-		User user=userRepository.save(mapToUserEntity(userRequest, new User()));
-
-		return ResponseEntity.ok(structure.setStatusCode(HttpStatus.CREATED.value()).setMessage("User registered successfully")
-				.setData(mapToUserResponse(user)));
-	}
-
+	
 	private UserResponse mapToUserResponse(User user) {
 		return UserResponse.builder()
 				.userId(user.getUserId())
@@ -44,7 +32,7 @@ public class UserServiceImpl implements UserService{
 				.deleted(user.isDeleted())
 				.build();
 	}
-
+	
 	private User mapToUserEntity(UserRequest userRequest, User user) {
 		user.setEmail(userRequest.getEmail());
 		//encoding the password from passwordEncoder
@@ -52,6 +40,17 @@ public class UserServiceImpl implements UserService{
 		user.setUsername(userRequest.getUsername());
 
 		return user;
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<UserResponse>> userRegistration(UserRequest userRequest) {
+		if(userRepository.existsByEmail(userRequest.getEmail()))
+			throw new UserAlreadyExistByEmailException("Faild to register User");
+
+		User user=userRepository.save(mapToUserEntity(userRequest, new User()));
+
+		return ResponseEntity.ok(structure.setStatusCode(HttpStatus.CREATED.value()).setMessage("User registered successfully")
+				.setData(mapToUserResponse(user)));
 	}
 
 	@Override

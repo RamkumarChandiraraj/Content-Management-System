@@ -1,15 +1,16 @@
 package com.example.cms.usercontroller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.example.cms.requestdto.BlogRequest;
 import com.example.cms.responsedto.BlogResponse;
+import com.example.cms.responsedto.ContributionPanelResponse;
 import com.example.cms.responsedto.UserResponse;
 import com.example.cms.userservice.BlogService;
 import com.example.cms.utility.ResponseStructure;
@@ -40,10 +41,22 @@ public class BlogController {
 	{
 		return blogService.findBlogById(blogId);
 	}
-	
+
 	@PutMapping("/blogs/{blogId}")
-	public ResponseEntity<ResponseStructure<BlogResponse>> updateBlogData(@RequestBody BlogRequest blogRequest, int blogId)
+	public ResponseEntity<ResponseStructure<BlogResponse>> updateBlogData(@RequestBody BlogRequest blogRequest,@PathVariable int blogId)
 	{
 		return blogService.updateBlogData(blogRequest,blogId);
+	}
+	
+	@PutMapping("/users/{userId}/contribution-panels/{panelId}")
+	public ResponseEntity<ResponseStructure<ContributionPanelResponse>> addContributor(@PathVariable int userId,@PathVariable int panelId)
+	{
+		return blogService.addContributor(userId,panelId);
+	}
+	
+	@DeleteMapping("/users/{userId}/contribution-panels/{panelId}")
+	public ResponseEntity<ResponseStructure<UserResponse>> removeUser(@PathVariable int userId,@PathVariable int panelId)
+	{
+		return blogService.removeUser(userId,panelId);
 	}
 }

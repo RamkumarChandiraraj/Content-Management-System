@@ -1,7 +1,6 @@
 package com.example.cms.utility;
 
 import org.springframework.stereotype.Component;
-
 import lombok.Getter;
 
 @Getter
