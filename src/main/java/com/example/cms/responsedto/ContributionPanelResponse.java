@@ -11,11 +11,6 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class BlogResponse {
-	private int blogId;
-	private String title;
-	private String[] topics;
-	private String about;
-	
-	private int userId;
+public class ContributionPanelResponse {
+	private int panelId;
 }
