@@ -24,5 +24,5 @@ public class ContributionPanel {
 	private int panelId;
 	
 	@ManyToMany
-	private List<User> contributor=new ArrayList<>();
+	private List<User> contributors=new ArrayList<>();
 }

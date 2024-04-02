@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.example.cms.userexception.BlogNotFoundByIdException;
+import com.example.cms.userexception.BlogPostAlreadyExistByTitleException;
+import com.example.cms.userexception.BlogPostNotFoundByIdException;
 import com.example.cms.userexception.BlogTitleAlreadyExistException;
 import com.example.cms.userexception.IllegalAccessRequestException;
 import com.example.cms.userexception.PanelNotFoundByIDException;
@@ -61,5 +63,15 @@ class ApplicationExceptionHandler {
 	public ResponseEntity<ErrorStructure<String>> handlerPanelNotFoundByID(PanelNotFoundByIDException ex)
 	{
 		return errorResponse(HttpStatus.BAD_REQUEST,ex.getMessage(),"Panel not found by the id");
+	}
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure<String>> handlerBlogPostAlreadyExistByTitle(BlogPostAlreadyExistByTitleException ex)
+	{
+		return errorResponse(HttpStatus.BAD_REQUEST,ex.getMessage(),"BlogPost Already Exists by the Title");
+	}
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure<String>> handlerBlogPostNotFoundById(BlogPostNotFoundByIdException ex)
+	{
+		return errorResponse(HttpStatus.BAD_REQUEST,ex.getMessage(),"BlogPost noy found by the id");
 	}
 }

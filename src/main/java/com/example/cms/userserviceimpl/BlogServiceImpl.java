@@ -133,7 +133,7 @@ public class BlogServiceImpl implements BlogService{
 				if(!blogRepository.existsByUserAndContributorPanel(owner, panel))
 					throw new IllegalAccessRequestException("Failed to add Contributer");
 				return userRepository.findById(userId).map(contributor->{
-					panel.getContributor().add(contributor);
+					panel.getContributors().add(contributor);
 					contributionPanlRepository.save(panel);
 					return ResponseEntity.ok(panelResponseStructure.setStatusCode(HttpStatus.OK.value())
 							.setMessage("Contributor added successfully")
@@ -151,7 +151,7 @@ public class BlogServiceImpl implements BlogService{
 				if(!blogRepository.existsByUserAndContributorPanel(owner, panel))
 					throw new IllegalAccessRequestException("Failed to delete User");
 				return userRepository.findById(userId).map(user->{
-					panel.getContributor().remove(user);
+					panel.getContributors().remove(user);
 					contributionPanlRepository.save(panel);
 					return ResponseEntity.ok(userResponseStructure.setStatusCode(HttpStatus.OK.value())
 							.setMessage("User deleted successfully")

@@ -1,10 +1,7 @@
 package com.example.cms.responsedto;
 
 import java.time.LocalDateTime;
-import java.util.List;
-
-import org.springframework.data.annotation.CreatedBy;
-
+import com.example.cms.enums.PostType;
 import com.example.cms.usermodel.Blog;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,12 +14,16 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserResponse {
-	private int userId;
-	private String username;
-	private String email;
+public class BlogPostResponse {
+	private int postId;
+	private String title;
+	private String subTitle;
+	private String summary;
+	
+	private PostType postType;
 	
 	private LocalDateTime createdAt;
 	private LocalDateTime lastModifiedAt;
-	private boolean deleted;
+	private String createdBy;
+	private String lastModifiedBy;
 }
