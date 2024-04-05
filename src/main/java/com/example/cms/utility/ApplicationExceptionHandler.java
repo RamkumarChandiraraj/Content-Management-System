@@ -10,7 +10,9 @@ import com.example.cms.userexception.BlogPostAlreadyExistByTitleException;
 import com.example.cms.userexception.BlogPostNotFoundByIdException;
 import com.example.cms.userexception.BlogTitleAlreadyExistException;
 import com.example.cms.userexception.IllegalAccessRequestException;
+import com.example.cms.userexception.InvalidPostStateException;
 import com.example.cms.userexception.PanelNotFoundByIDException;
+import com.example.cms.userexception.TimeDateNotVaidException;
 import com.example.cms.userexception.TitleEmptyException;
 import com.example.cms.userexception.UserAlreadyExistByEmailException;
 import com.example.cms.userexception.UserNotFoundByIdException;
@@ -72,6 +74,21 @@ class ApplicationExceptionHandler {
 	@ExceptionHandler
 	public ResponseEntity<ErrorStructure<String>> handlerBlogPostNotFoundById(BlogPostNotFoundByIdException ex)
 	{
-		return errorResponse(HttpStatus.BAD_REQUEST,ex.getMessage(),"BlogPost noy found by the id");
+		return errorResponse(HttpStatus.BAD_REQUEST,ex.getMessage(),"BlogPost not found by the id");
+	}
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure<String>> handlerInvalidPostState(InvalidPostStateException ex)
+	{
+		return errorResponse(HttpStatus.BAD_REQUEST,ex.getMessage(),"Posttype is in the Draft");
+	}
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure<String>> handlerIllegalArgument(IllegalArgumentException ex)
+	{
+		return errorResponse(HttpStatus.BAD_REQUEST,ex.getMessage(),"Pass the existing postId and give correct publishRequest");
+	}
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure<String>> handlerTimeDateNotVaid(TimeDateNotVaidException ex)
+	{
+		return errorResponse(HttpStatus.BAD_REQUEST,ex.getMessage(),"Invalid Date and Time");
 	}
 }

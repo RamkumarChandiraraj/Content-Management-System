@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.example.cms.enums.PostType;
 import com.example.cms.requestdto.BlogPostRequest;
 import com.example.cms.responsedto.BlogPostResponse;
+import com.example.cms.responsedto.PublishResponse;
 import com.example.cms.userexception.BlogNotFoundByIdException;
 import com.example.cms.userexception.BlogPostAlreadyExistByTitleException;
 import com.example.cms.userexception.BlogPostNotFoundByIdException;
@@ -16,6 +17,7 @@ import com.example.cms.userexception.IllegalAccessRequestException;
 import com.example.cms.userexception.UserNotFoundByIdException;
 import com.example.cms.usermodel.Blog;
 import com.example.cms.usermodel.BlogPost;
+import com.example.cms.usermodel.Publish;
 import com.example.cms.userrepository.BlogPostRepository;
 import com.example.cms.userrepository.BlogRepository;
 import com.example.cms.userrepository.ContributionPanlRepository;
@@ -52,6 +54,10 @@ public class BlogPostServiceImpl implements BlogPostService{
 		blog.setTitle(blogRequest.getTitle());
 		blog.setSubTitle(blogRequest.getSubTitle());
 		blog.setSummary(blogRequest.getSummary());
+		blog.setCreatedAt(blogRequest.getCreatedAt());
+		blog.setCreatedBy(blogRequest.getCreatedBy());
+		blog.setLastModifiedAt(blogRequest.getLastModifiedAt());
+		blog.setLastModifiedBy(blogRequest.getLastModifiedBy());
 		return blog;
 	}
 
@@ -124,4 +130,46 @@ public class BlogPostServiceImpl implements BlogPostService{
 		}).get();
 	}
 
+	@Override
+	public ResponseEntity<ResponseStructure<BlogPostResponse>> findBlogPostById(int postId) {
+		return blogPostRepository.findById(postId).map(blogPost->{
+			return ResponseEntity.ok(responseStructure.setStatusCode(HttpStatus.OK.value())
+					.setMessage("The blogPost find by Id is successful")
+					.setData(mapToBlogPostAndPublishResponse(blogPost)));
+		}).orElseThrow(()->new BlogPostNotFoundByIdException("BlogPost not found by the given Id"));
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<BlogPostResponse>> findByIdAndPosttype(int postId) {
+		return blogPostRepository.findByPostIdAndPostType(postId,PostType.PUBLISHED).map(blogPost->
+		ResponseEntity.ok(responseStructure.setStatusCode(HttpStatus.OK.value())
+				.setMessage("The published list for the given blogPost is successful")
+				.setData(mapToBlogPostAndPublishResponse(blogPost)))).orElseThrow(()->new IllegalAccessRequestException("Failed to fetch the blogPost"));
+	}
+
+	public BlogPostResponse mapToBlogPostAndPublishResponse(BlogPost blogPost) {
+		return BlogPostResponse.builder()
+				.postId(blogPost.getPostId())
+				.title(blogPost.getTitle())
+				.subTitle(blogPost.getSubTitle())
+				.summary(blogPost.getSummary())
+				.createdAt(blogPost.getCreatedAt())
+				.lastModifiedAt(blogPost.getLastModifiedAt())
+				.createdBy(blogPost.getCreatedBy())
+				.lastModifiedBy(blogPost.getLastModifiedBy())
+				.postType(blogPost.getPostType())
+				.publishResponse(blogPost.getPublish()!=null?mapToPublishResponse(blogPost.getPublish()):null)
+				.build();
+	}
+
+	public PublishResponse mapToPublishResponse(Publish publish) {
+		return  PublishResponse.builder()
+				.publishId(publish.getPublishId())
+				.seoTitle(publish.getSeoTitle())
+				.seoDescription(publish.getSeoDescription())
+				.seoTags(publish.getSeoTags())
+				.createdAt(publish.getCreatedAt())
+				.build();
+
+	}
 }
